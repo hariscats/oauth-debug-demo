@@ -1,0 +1,19 @@
+### Request an access token from Azure AD
+POST https://login.microsoftonline.com/{{tenantId}}/oauth2/v2.0/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{clientId}}&client_secret={{clientSecret}}&scope={{scope}}
+
+### Use the obtained access token to call a sample APIM-protected API
+POST {{apimUrl}}/petstore/pet HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id": 10,
+  "name": "doggie",
+  "category": {"id": 1, "name": "Dogs"},
+  "photoUrls": ["string"],
+  "tags": [{"id": 0, "name": "string"}],
+  "status": "available"
+}

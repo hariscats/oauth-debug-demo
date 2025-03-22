@@ -1,0 +1,20 @@
+{
+    "rest-client.environmentVariables": {
+        "local": {
+            "apimUrl": "",
+            "tenantId": "",
+            "clientId": "",
+            "clientSecret": "",
+            "scope": "",
+            "token": ""
+        },
+        "staging": {
+            "baseUrl": "",
+            "token": ""
+        },
+        "production": {
+            "baseUrl": "",
+            "token": ""
+        }
+    }
+}
