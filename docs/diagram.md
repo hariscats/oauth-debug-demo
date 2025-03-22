@@ -6,7 +6,7 @@ Below is the OAuth flow diagram as an PNG:
 
 And here is the Mermaid source code used to generate the diagram as code that could be changed and visualized using Mermaid live editor:
 
-```mermaid
+```text
 sequenceDiagram
     autonumber
     title OAuth Flow: Python Client -> Entra ID -> APIM -> Pet Store API
