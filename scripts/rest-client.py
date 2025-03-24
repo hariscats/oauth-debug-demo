@@ -86,6 +86,7 @@ def main():
     parser = argparse.ArgumentParser(description="Test APIs behind APIM with OAuth authentication.")
     parser.add_argument("--method", type=str, default="GET", help="HTTP method to use (GET, POST, PUT, DELETE)")
     parser.add_argument("--payload", type=str, help="JSON payload as a string (for POST/PUT requests)")
+    parser.add_argument("--payload-file", type=str, help="Path to JSON payload file (for POST/PUT requests)")
     parser.add_argument("--endpoint", type=str, default=APIM_ENDPOINT, help="API endpoint URL to test")
     args = parser.parse_args()
 
@@ -94,17 +95,29 @@ def main():
 
     # Convert payload string to dictionary if provided
     json_payload = None
-    if args.payload:
+    
+    # Check if payload file is provided
+    if args.payload_file:
+        try:
+            logger.info(f"Loading payload from file: {args.payload_file}")
+            with open(args.payload_file, 'r') as f:
+                json_payload = json.load(f)
+            logger.info(f"Payload loaded successfully from file")
+        except Exception as e:
+            logger.error(f"Failed to load JSON payload from file: {e}")
+            sys.exit(1)
+    # If no payload file but direct payload string is provided
+    elif args.payload:
         try:
             json_payload = json.loads(args.payload)
         except json.JSONDecodeError as e:
-            logger.error("Invalid JSON payload: %s", e)
+            logger.error(f"Invalid JSON payload: {e}")
             sys.exit(1)
 
     # Call the API and print response
     response = call_api(args.endpoint, method=args.method, payload=json_payload, access_token=token)
-    logger.info("API response status: %s", response.status_code)
-    logger.info("Response body: %s", response.text)
+    logger.info(f"API response status: {response.status_code}")
+    logger.info(f"Response body: {response.text}")
     print("Response Status:", response.status_code)
     print("Response Body:", response.text)
 
